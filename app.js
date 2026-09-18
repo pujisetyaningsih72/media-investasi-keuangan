@@ -631,8 +631,46 @@ function isSupabaseReady(){
   const statusEl = document.getElementById("nilaiStatus");
   const filterKelas = document.getElementById("nilaiFilterKelas");
   const refreshBtn = document.getElementById("btnRefreshNilai");
+  const lockCard = document.getElementById("nilaiLock");
+  const contentEl = document.getElementById("nilaiContent");
+  const passwordInput = document.getElementById("nilaiPassword");
+  const btnBuka = document.getElementById("btnBukaNilai");
+  const lockStatus = document.getElementById("nilaiLockStatus");
+  const UNLOCK_KEY = "nilai_unlocked";
   let allRows = [];
   let loaded = false;
+
+  function getPassword(){
+    return typeof GURU_PASSWORD === "string" && GURU_PASSWORD.length > 0 ? GURU_PASSWORD : "guru123";
+  }
+
+  function isUnlocked(){
+    return sessionStorage.getItem(UNLOCK_KEY) === "1";
+  }
+
+  function showContent(){
+    lockCard.style.display = "none";
+    contentEl.style.display = "block";
+    if(!loaded){ loaded = true; loadData(); }
+  }
+
+  function tryUnlock(){
+    const val = passwordInput.value;
+    if(val === getPassword()){
+      sessionStorage.setItem(UNLOCK_KEY, "1");
+      lockStatus.textContent = "";
+      passwordInput.value = "";
+      showContent();
+    }else{
+      lockStatus.textContent = "Kata sandi salah, coba lagi.";
+      lockStatus.className = "form-status err";
+      passwordInput.value = "";
+      passwordInput.focus();
+    }
+  }
+
+  btnBuka.addEventListener("click", tryUnlock);
+  passwordInput.addEventListener("keydown", (e) => { if(e.key === "Enter") tryUnlock(); });
 
   function renderTable(rows){
     if(rows.length === 0){
@@ -696,8 +734,10 @@ function isSupabaseReady(){
   refreshBtn.addEventListener("click", loadData);
   filterKelas.addEventListener("change", applyFilter);
 
-  // Muat data begitu menu "Daftar Nilai" pertama kali dibuka
+  // Saat menu "Daftar Nilai" dibuka: jika sudah pernah buka kata sandi di sesi ini, langsung tampilkan
   document.querySelector('.nav-item[data-target="nilai"]').addEventListener("click", () => {
-    if(!loaded){ loaded = true; loadData(); }
+    if(isUnlocked()){
+      showContent();
+    }
   });
 })();

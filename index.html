@@ -566,25 +566,40 @@
       <p class="page-lead">Daftar skor objektif (pilihan ganda + pilihan ganda kompleks) seluruh siswa yang sudah mengerjakan evaluasi, diurutkan dari nilai tertinggi.</p>
     </header>
 
-    <div class="card nilai-toolbar">
-      <div class="field" style="max-width:220px;">
-        <label for="nilaiFilterKelas">Filter Kelas</label>
-        <select id="nilaiFilterKelas"><option value="">Semua Kelas</option></select>
+    <!-- Layar kunci -->
+    <div class="card nilai-lock" id="nilaiLock">
+      <h3>🔒 Khusus Guru</h3>
+      <p>Masukkan kata sandi untuk melihat daftar nilai siswa.</p>
+      <div class="field" style="max-width:280px;">
+        <label for="nilaiPassword">Kata Sandi</label>
+        <input type="password" id="nilaiPassword" placeholder="Masukkan kata sandi">
       </div>
-      <button class="btn btn-ghost" id="btnRefreshNilai">↻ Muat Ulang</button>
+      <button class="btn btn-primary" id="btnBukaNilai">Buka Daftar Nilai</button>
+      <p class="form-status" id="nilaiLockStatus"></p>
     </div>
 
-    <div class="table-wrap card" style="padding:0;">
-      <table class="compare-table" id="nilaiTable">
-        <thead>
-          <tr><th>#</th><th>Nama Siswa</th><th>Kelas</th><th>Benar</th><th>Skor Objektif</th><th>Waktu Mengerjakan</th></tr>
-        </thead>
-        <tbody id="nilaiTableBody">
-          <tr><td colspan="6" class="muted" style="text-align:center; padding:24px;">Memuat data...</td></tr>
-        </tbody>
-      </table>
+    <!-- Konten (tampil setelah kata sandi benar) -->
+    <div id="nilaiContent" style="display:none;">
+      <div class="card nilai-toolbar">
+        <div class="field" style="max-width:220px;">
+          <label for="nilaiFilterKelas">Filter Kelas</label>
+          <select id="nilaiFilterKelas"><option value="">Semua Kelas</option></select>
+        </div>
+        <button class="btn btn-ghost" id="btnRefreshNilai">↻ Muat Ulang</button>
+      </div>
+
+      <div class="table-wrap card" style="padding:0;">
+        <table class="compare-table" id="nilaiTable">
+          <thead>
+            <tr><th>#</th><th>Nama Siswa</th><th>Kelas</th><th>Benar</th><th>Skor Objektif</th><th>Waktu Mengerjakan</th></tr>
+          </thead>
+          <tbody id="nilaiTableBody">
+            <tr><td colspan="6" class="muted" style="text-align:center; padding:24px;">Memuat data...</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <p class="form-status" id="nilaiStatus"></p>
     </div>
-    <p class="form-status" id="nilaiStatus"></p>
   </section>
 
 </main>
